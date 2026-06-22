@@ -1,12 +1,12 @@
 #ifndef CPPJIEBA_HMMMODEL_H
 #define CPPJIEBA_HMMMODEL_H
 
-#include "limonp/StringUtil.hpp"
+#include "UnicodeFile.hpp"
+#include "Utils.hpp"
 #include "Trie.hpp"
 
 namespace cppjieba {
 
-using namespace limonp;
 typedef unordered_map<Rune, double> EmitProbMap;
 
 struct HMMModel {
@@ -32,7 +32,8 @@ struct HMMModel {
   ~HMMModel() {
   }
   void LoadModel(const string& filePath) {
-    ifstream ifile(filePath.c_str());
+    ifstream ifile;
+    OpenInputFile(ifile, filePath);
     XCHECK(ifile.is_open()) << "open " << filePath << " failed";
     string line;
     vector<string> tmp;
@@ -105,7 +106,7 @@ struct HMMModel {
         XLOG(ERROR) << "emitProb illegal.";
         return false;
       }
-      if (!DecodeRunesInString(tmp2[0], unicode) || unicode.size() != 1) {
+      if (!DecodeUTF8RunesInString(tmp2[0], unicode) || unicode.size() != 1) {
         XLOG(ERROR) << "TransCode failed.";
         return false;
       }

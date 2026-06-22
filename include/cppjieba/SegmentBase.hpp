@@ -1,7 +1,7 @@
 #ifndef CPPJIEBA_SEGMENTBASE_H
 #define CPPJIEBA_SEGMENTBASE_H
 
-#include "limonp/Logging.hpp"
+#include "Utils.hpp"
 #include "PreFilter.hpp"
 #include <cassert>
 
@@ -9,8 +9,6 @@
 namespace cppjieba {
 
 const char* const SPECIAL_SEPARATORS = " \t\n\xEF\xBC\x8C\xE3\x80\x82";
-
-using namespace limonp;
 
 class SegmentBase {
  public:
@@ -25,8 +23,8 @@ class SegmentBase {
   bool ResetSeparators(const string& s) {
     symbols_.clear();
     RuneStrArray runes;
-    if (!DecodeRunesInString(s, runes)) {
-      XLOG(ERROR) << "decode " << s << " failed";
+    if (!DecodeUTF8RunesInString(s, runes)) {
+      XLOG(ERROR) << "UTF-8 decode failed for separators: " << s;
       return false;
     }
     for (size_t i = 0; i < runes.size(); i++) {

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <set>
 #include <cassert>
-#include "limonp/Logging.hpp"
+#include "Utils.hpp"
 #include "DictTrie.hpp"
 #include "SegmentBase.hpp"
 #include "Unicode.hpp"
@@ -68,6 +68,7 @@ class FullSegment: public SegmentBase {
         assert(nextoffset < dags.size());
         const DictUnit* du = dags[i].nexts[j].second;
         if (du == NULL) {
+          wordLen = 1;
           if (dags[i].nexts.size() == 1 && maxIdx <= uIdx) {
             WordRange wr(begin + i, begin + nextoffset);
             res.push_back(wr);
